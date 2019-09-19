@@ -1,0 +1,12 @@
+body {
+    margin: 0;
+    border: none;
+    display: flex;
+    background: url(./images/Arcade_Background.png);
+    top: 60px;
+    position: relative;
+    background-repeat: no-repeat;
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
+}
