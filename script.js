@@ -478,7 +478,7 @@ margeImage.src = 'images/margie.png'
 const marge = new Familymarge(50, 100, -5, 200, margeImage);
 
 const enemyTwo = new Image()
-enemyTwo.src = 'images/finalEnemy.png'
+enemyTwo.src = 'images/FinalEnemy.png'
 let bartDark = new FinalEnemy(enemyTwo)
 
 
