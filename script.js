@@ -242,7 +242,7 @@ class Enemy {
     this.x = 1000;
     this.y = Math.floor(Math.random() * (400 - 100)) + 100;
     this.img = img;
-    this.speed = 5;
+    this.speed = 4;
     this.health = 30;
     this.attack = 5;
     this.stateCrash = false;
@@ -415,7 +415,7 @@ const UP = 38,
   RIGHT = 39,
   ENTER = 13,
   SPACE = 32;
-P = 80;
+  P = 80;
 
 let START = LOADING = GAMEOVER = PAUSE = false;
 let STATEGAME = false;
@@ -608,81 +608,81 @@ function sounds() {
   }
 }
 
-  //Função que desenha com a condição de frames
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // if (STATEPAUSE === false) {
-    //   ctx.drawImage(pauseImg, 450, 250, 180, 880)
-    // }
-    if (!START && !LOADING) {
-      ctx.drawImage(imgIntro, 0, 0, canvas.width, canvas.height)
-    }
-    if (START && LOADING && !nextEnemy) {
-      imgBackground.draw();
-    }
-    if (START && LOADING && nextEnemy) {
-      imgBackgroundTwo.draw();
-    }
-    if (START || LOADING) {
-      homer.draw();
-      marge.draw();
-      lifeImg.draw();
-      if (nextEnemy) {
-        bartDark.draw()
-        bartDark.move()
-      }
-    }
-    if (finalGame) {
-      imgBackground.draw();
-      homer.draw();
-      marge.draw();
-      duffImg.draw();
+//Função que desenha com a condição de frames
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // if (STATEPAUSE === false) {
+  //   ctx.drawImage(pauseImg, 450, 250, 180, 880)
+  // }
+  if (!START && !LOADING) {
+    ctx.drawImage(imgIntro, 0, 0, canvas.width, canvas.height)
+  }
+  if (START && LOADING && !nextEnemy) {
+    imgBackground.draw();
+  }
+  if (START && LOADING && nextEnemy) {
+    imgBackgroundTwo.draw();
+  }
+  if (START || LOADING) {
+    homer.draw();
+    marge.draw();
+    lifeImg.draw();
+    if (nextEnemy) {
+      bartDark.draw()
+      bartDark.move()
     }
   }
+  if (finalGame) {
+    imgBackground.draw();
+    homer.draw();
+    marge.draw();
+    duffImg.draw();
+  }
+}
 
-  //função "motor", que inicia todas as outras funções e renderizações do jogo com condições
-  function startRender() {
-    if (!GAMEOVER) { //Se o estado não for GAMEOVER ele executa toda a função
-      if (!STATEPAUSE) { //se o estado não for PAUSE, ele executa todas as ações do bloco
-        homer.move();
-        marge.move()
-        lifeImg.move();
-        bartDark.checkEnemyCrash()
-        homer.attack();
-        draw();
-        frames += 1;
-        homer.crashPlayer();
-        updateEnemy();
-        console.log(homer.health);
-        if (!finalGame) {
-          sounds()
-        } else {
-          nextEnemySound.pause();
-        }
+//função "motor", que inicia todas as outras funções e renderizações do jogo com condições
+function startRender() {
+  if (!GAMEOVER) { //Se o estado não for GAMEOVER ele executa toda a função
+    if (!STATEPAUSE) { //se o estado não for PAUSE, ele executa todas as ações do bloco
+      homer.move();
+      marge.move()
+      lifeImg.move();
+      bartDark.checkEnemyCrash()
+      homer.attack();
+      draw();
+      frames += 1;
+      homer.crashPlayer();
+      updateEnemy();
+      console.log(homer.health);
+      if (!finalGame) {
+        sounds()
+      } else {
+        nextEnemySound.pause();
       }
     }
-    if (GAMEOVER) { //se o estado GAMEOVER for true, ele faz apenas executa apenas este bloco
-      ctx.drawImage(gameOverImg, 0, 0, canvas.width, canvas.height)
-      levelOne.pause();
+  }
+  if (GAMEOVER) { //se o estado GAMEOVER for true, ele faz apenas executa apenas este bloco
+    ctx.drawImage(gameOverImg, 0, 0, canvas.width, canvas.height)
+    levelOne.pause();
 
-      nextEnemySound.pause()
-      if (!stateGameOverSound) {
-        stateGameOverSound = true;
-        gameOverSound.play()
-      }
-    } else {
-      gameOverSound.pause();
+    nextEnemySound.pause()
+    if (!stateGameOverSound) {
+      stateGameOverSound = true;
+      gameOverSound.play()
     }
-    if (finalGame) {
-      levelOne.play();
-    }
-
-    if (stateFinal) {
-      ctx.drawImage(imgVictory, 0, 0, canvas.width, canvas.height);
-      levelOne.pause();
-      victorySound.play();
-    }
-    requestAnimationFrame(startRender);
+  } else {
+    gameOverSound.pause();
+  }
+  if (finalGame) {
+    levelOne.play();
   }
 
-  requestAnimationFrame(startRender)
+  if (stateFinal) {
+    ctx.drawImage(imgVictory, 0, 0, canvas.width, canvas.height);
+    levelOne.pause();
+    victorySound.play();
+  }
+  requestAnimationFrame(startRender);
+}
+
+requestAnimationFrame(startRender)
