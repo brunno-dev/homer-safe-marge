@@ -14,9 +14,8 @@ Clone or download this project, open the index.html file in your browser and hav
 >**Controls**:
 
 > * Use your Keyboard
-> * Enter Key is used to Begin the game, pause and restart
-> * Up, down, left, Right Key to go move
-> * "p" Key to go pause
+> * Up, down, left, right Key to go move
+> * "P" Key to go pause
 > * Space Key to Attack
 > * Shift Key to restart
 > * Punch the ghosts and boss. Safe Marge!
