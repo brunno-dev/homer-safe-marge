@@ -1,13 +1,16 @@
 //CRIA O CONTEXTO E FAZ AJUSTES NAS DIMENSÕES DO CANVAS
+
 //iniciar o contexto canvas
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 
+//define tamanho do canvas em relação a tela do usuário
 canvas.width = window.innerWidth * 0.65
 canvas.height = window.innerHeight * 0.77
 
 
 //CLASSES CRIADAS PARA OS OBJETOS DO JOGO
+//homer
 class Player {
   constructor(img) {
     this.moveRight = this.moveLeft = this.moveDown = this.moveUp = this.fight = false;
@@ -18,7 +21,7 @@ class Player {
     this.y = 240;
     this.img = img;
     this.speed = 10;
-    this.health = 100;
+    this.health = 200;
     this.strength = 5;
   }
   //desenhar o contexto da imagem do Player criado, com base nos parâmetros abaixo
@@ -36,7 +39,7 @@ class Player {
 
     //para a direção "direita", existe uma ordem de sprites, implementada abaixo com switch; RIGHT
     if (frames % 3 === 0) {
-      if (this.moveRight && this.x < 955 - (this.width * 1.25)) {
+      if (this.moveRight && this.x < 880 - (this.width * 1.25)) {
         this.x += (this.speed);
         switch (this.sourceX) {
           case 0:
@@ -142,7 +145,7 @@ class Player {
   }
 
 }
-
+//marge
 class Familymarge {
   constructor(width, height, x, y, img) {
     this.moveRight = this.moveLeft = this.moveDown = this.moveUp = this.fight = false;
@@ -166,7 +169,7 @@ class Familymarge {
     }
   }
 }
-
+//cerveja
 class Duff {
   constructor(width, height, x, y, img) {
     this.sourceX = this.sourceY = 0;
@@ -180,7 +183,7 @@ class Duff {
     ctx.drawImage(this.img, this.sourceX, this.sourceY, this.width, this.height, this.x, this.y, 70, 40);
   }
 }
-
+//display de vida
 class Life {
   constructor(width, height, x, y, img) {
     this.moveRight = this.moveLeft = this.moveDown = this.moveUp = this.fight = false;
@@ -196,15 +199,15 @@ class Life {
     ctx.drawImage(this.img, this.sourceX, this.sourceY, this.width, this.height, this.x, this.y, 110, 120);
   }
   move() {
-    if (homer.health < 70 && homer.health > 50) {
+    if (homer.health > 50 && homer.health < 130) {
       this.sourceX = 160;
     }
-    if (homer.health < 20) {
+    if (homer.health <= 50) {
       this.sourceX = 288;
     }
   }
 }
-
+//imagens de fundo
 class BackgroundImage {
   constructor(img) {
     this.img = img;
@@ -228,7 +231,7 @@ class BackgroundImage {
     // }
   }
 };
-
+//fantasmas
 class Enemy {
   constructor(img) {
     this.sourceX = 791;
@@ -270,7 +273,7 @@ class Enemy {
     }
   }
 }
-
+//boss
 class FinalEnemy {
   constructor(img) {
     this.sourceX = 0;
@@ -413,22 +416,24 @@ const UP = 38,
   SPACE = 32;
   P = 80;
 
+//estados do jogo
 let START = LOADING = GAMEOVER = PAUSE = false;
 let STATEGAME = false;
 let STATEPAUSE = false;
 
+//variáveis que definem mudanças de estado/ações
 let frames = 0;
 let counterEnemy = 0;
 let tankGhost = [];
 let tankGhostDead = [];
-let crashed = nextEnemy = enemyAgain = finalGame = stateVictoryGame = stateImg = stateGameOverSound = stateFinal = false;
+let crashed = nextEnemy = enemyAgain = finalGame = stateVictoryGame =
+  stateImg = stateGameOverSound = stateFinal = false;
 
-//cria a imagem e objeto do player
+//CRIA AS IMAGENS DO JOGO
 const playerOne = new Image()
 playerOne.src = 'images/homer.png'
 const homer = new Player(playerOne);
 
-//cria a imagem e objetos de background
 const img = new Image();
 img.src = "images/scene.png";
 let imgBackground = new BackgroundImage(img)
@@ -465,7 +470,6 @@ const life = new Image();
 life.src = 'images/life.png'
 const lifeImg = new Life(100, 120, 750, 10, life)
 
-//cria a imagem e objeto inimigo
 const enemyOne = new Image()
 enemyOne.src = 'images/all-cut.png'
 
@@ -478,8 +482,7 @@ enemyTwo.src = 'images/FinalEnemy.png'
 let bartDark = new FinalEnemy(enemyTwo)
 
 
-
-//sons do jogo
+//SONS
 const pauseSound = new Audio('sounds/audio/Pause Sound.m4a');
 
 const levelOne = new Audio('sounds/audio/129-Stage 1 - (Downtown Springfield).wav')
@@ -502,84 +505,88 @@ const victorySound = new Audio('sounds/audio/victory.mp3');
 
 const damageHomer = new Audio('sounds/audio/Homer Simpson Doh Sound FX.m4a')
 
-//FUNÇÕES QUE CONTROLAM AÇÕES COM BASE EM ESTADOS DO JOGO
-//Função que controla as ações dos fantasmas e do último inimigo.
 
+//FUNÇÕES QUE CONTROLAM AS AÇÕES DO JOGO E RENDERIZAÇÃO
+//Função que controla as ações dos fantasmas e do último inimigo.
 window.onload = function () {
   introSound.play()
 }
 
+//função voltada para definir ações que envolvem os inimigos
 function updateEnemy() {
   if (START || LOADING) {
     if (tankGhost.length >= 0) {
+      //chama os métodos da classe enemy(fantasmas)
       for (i = 0; i < tankGhost.length; i++) {
         tankGhost[i].move();
         tankGhost[i].draw();
+        //condição para quando os socos do homer atingirem os fantasmas
         if (tankGhost[i].stateCrash && homer.fight) {
           tankGhost[i].health -= 3
           tankGhost[i].x += 10
           punchSound.pause()
           punchTwoSound.play()
-        }
+        } //sons de soco que não atingem os fantasmas
         if (!tankGhost[i].stateCrash && homer.fight) {
           punchSound.play()
-        }
+        } //dano que os fantasmas causam ao homer
         if (tankGhost[i].stateCrash && !homer.fight) {
           homer.x -= 10;
           homer.health -= 3;
           homer.sourceX = 10;
           homer.sourceY = 2040;
           damageHomer.play();
-        }
+        } //para os fantasmas andarem na direção y da marge a partir de um ponto x
         if (tankGhost[i].x < homer.x && tankGhost[i].x < 150) {
           tankGhost[i].y = 250;
-        }
+        } //aumenta a velocidade dos fantasmas, após matar dois deles
         if (tankGhostDead.length >= 2) {
-          tankGhost[i].speed += 0.1;
-        }
+          tankGhost[i].speed += 0.05;
+        } //se os fantasmas encontrarem a marge, game over true
         if (tankGhost[i].x <= 25) {
           GAMEOVER = true;
-        }
+        } // transfere os fantasmas do tanque original para o tanque de fantasmas destruídos
         if (tankGhost[i].health <= 0) {
           let ghostDead = tankGhost.splice(i, 1);
           tankGhostDead.push(ghostDead)
         }
-      }
+      } //define a quantidade de fantasmas que vão aparecer
+      if (tankGhostDead.length < 11)
+        if (counterEnemy % 150 === 0) {
+          tankGhost.push(new Enemy(enemyOne))
+          counterEnemy = 0;
+          //estado que invoca o boss
+        } if (tankGhostDead.length > 2 && tankGhost.length === 0) {
+        nextEnemy = true;
+      } //dano sofrido ao boss pelo homer
       if (bartDark.stateCrash && homer.fight) {
         bartDark.health -= 5;
         bartDark.x += 15;
         bartDark.speed += 0.3;
-      }
+      } //para o boss andar na direção y da marge a partir de um ponto x
       if (bartDark.x < homer.x && bartDark.x < 150) {
         bartDark.y = 250;
-      }
+      } //retorna o boss para a tela, após a primeira derrota dele
       if (bartDark.health <= 0 && !enemyAgain) {
         bartDark.x = 1300;
         bartDark.health = 100;
         bartDark.speed = 30;
         bartDark.y = Math.floor(Math.random() * (400 - 100)) + 100;
         enemyAgain = true;
-      }
+      } //momento que o bosso é derrotado
       if (bartDark.health <= 0 && enemyAgain) {
         bartDark.x = -100;
         finalGame = true;
         nextEnemy = false;
-      }
+      } //momento que o homer pega a cerveja
       if (finalGame && homer.x === 80) {
         stateFinal = true;
       }
       counterEnemy += 1;
-    }
-    if (tankGhostDead.length < 11)
-      if (counterEnemy % 150 === 0) {
-        tankGhost.push(new Enemy(enemyOne))
-        counterEnemy = 0;
-      } if (tankGhostDead.length > 2 && tankGhost.length === 0) {
-      nextEnemy = true;
-    }
+    } //estado de game over
     if (bartDark.x <= 25 && bartDark.x > 0) {
       GAMEOVER = true;
-    }
+    } //checa se estado de colisão dos fantasmas do tanque é true
     crashed = tankGhost.some(item => item.checkEnemyCrash())
   }
 }
@@ -607,9 +614,7 @@ function sounds() {
 //Função que desenha com a condição de frames
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  // if (STATEPAUSE === false) {
-  //   ctx.drawImage(pauseImg, 450, 250, 180, 880)
-  // }
+
   if (!START && !LOADING) {
     ctx.drawImage(imgIntro, 0, 0, canvas.width, canvas.height)
   }
@@ -636,7 +641,7 @@ function draw() {
   }
 }
 
-//função "motor", que inicia todas as outras funções e renderizações do jogo com condições
+//função "motor", que inicia todas as outras funções e renderizações do jogo
 function startRender() {
   if (!GAMEOVER) { //Se o estado não for GAMEOVER ele executa toda a função
     if (!STATEPAUSE) { //se o estado não for PAUSE, ele executa todas as ações do bloco
