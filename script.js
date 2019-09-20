@@ -169,7 +169,6 @@ class Familymarge {
 
 class Duff {
   constructor(width, height, x, y, img) {
-    this.moveRight = this.moveLeft = this.moveDown = this.moveUp = this.fight = false;
     this.sourceX = this.sourceY = 0;
     this.width = width;
     this.height = height;
@@ -179,9 +178,6 @@ class Duff {
   }
   draw() {
     ctx.drawImage(this.img, this.sourceX, this.sourceY, this.width, this.height, this.x, this.y, 70, 40);
-  }
-  move() {
-
   }
 }
 
@@ -415,7 +411,7 @@ const UP = 38,
   RIGHT = 39,
   ENTER = 13,
   SPACE = 32;
-  P = 80;
+P = 80;
 
 let START = LOADING = GAMEOVER = PAUSE = false;
 let STATEGAME = false;
@@ -463,7 +459,7 @@ gameOverImg.src = 'images/gameOver.png'
 
 const duff = new Image();
 duff.src = 'images/duff.png'
-const duffImg = new Duff(duff.width, duff.height, 30, 250, duff)
+const duffImg = new Duff(duff.width, duff.height, 50, 250, duff)
 
 const life = new Image();
 life.src = 'images/life.png'
@@ -574,7 +570,7 @@ function updateEnemy() {
       }
       counterEnemy += 1;
     }
-    if (tankGhostDead.length < 10)
+    if (tankGhostDead.length < 2)
       if (counterEnemy % 150 === 0) {
         tankGhost.push(new Enemy(enemyOne))
         counterEnemy = 0;
@@ -634,9 +630,9 @@ function draw() {
   }
   if (finalGame) {
     imgBackground.draw();
+    duffImg.draw();
     homer.draw();
     marge.draw();
-    duffImg.draw();
   }
 }
 
@@ -653,7 +649,6 @@ function startRender() {
       frames += 1;
       homer.crashPlayer();
       updateEnemy();
-      console.log(homer.health);
       if (!finalGame) {
         sounds()
       } else {
@@ -680,7 +675,13 @@ function startRender() {
   if (stateFinal) {
     ctx.drawImage(imgVictory, 0, 0, canvas.width, canvas.height);
     levelOne.pause();
-    victorySound.play();
+    if (!stateVictoryGame) {
+      victorySound.play();
+      stateVictoryGame = true;
+    } else {
+      stateVictoryGame.pause();
+    }
+
   }
   requestAnimationFrame(startRender);
 }
