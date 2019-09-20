@@ -570,7 +570,7 @@ function updateEnemy() {
       }
       counterEnemy += 1;
     }
-    if (tankGhostDead.length < 2)
+    if (tankGhostDead.length < 11)
       if (counterEnemy % 150 === 0) {
         tankGhost.push(new Enemy(enemyOne))
         counterEnemy = 0;
