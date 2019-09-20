@@ -1,7 +1,7 @@
-# Homer, help! - Safe Marge...
+# Homer, help! - Save Marge...
 > * "Homer, Help" is a game build in HTML canvas, CSS and Javascript.
 > * This game is in beta version 1.0.2
-#### TLDR: https://brunno-dev.github.io/homer-safe-marge/
+#### TLDR: https://brunno-dev.github.io/homer-save-marge/
 
 ## About
 
@@ -9,7 +9,7 @@ Little tribute to The Simpsons arcade game.
 
 ## Installation
 
-Clone or download this project, open the index.html file in your browser and have Fun. Or just click in this [link](https://github.com/brunno-dev/homer-safe-marge/)!
+Clone or download this project, open the index.html file in your browser and have Fun. Or just click in this [link](https://github.com/brunno-dev/homer-save-marge/)!
 
 >**Controls**:
 
@@ -18,7 +18,7 @@ Clone or download this project, open the index.html file in your browser and hav
 > * "P" Key to go pause
 > * Space Key to Attack
 > * Shift Key to restart
-> * Punch the ghosts and boss. Safe Marge!
+> * Punch the ghosts and boss. Save Marge!
 
 ## Release History
 
@@ -52,7 +52,7 @@ Distributed under the Creative Commons license - Attribution-NonCommercial 4.0 I
 ## Contributing
 >This is a free software, feel free to contribute in any way you want
 
-1. Fork it (<https://github.com/brunno-dev/homer-safe-marge/fork>)
+1. Fork it (<https://github.com/brunno-dev/homer-save-marge/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
