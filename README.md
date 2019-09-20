@@ -1,12 +1,12 @@
 # Homer, help! - Safe Marge...
-> Little tribute to The Simpsons arcade game. I love Simpsons!
-> "Homer, Help" is a game build in HTML canvas, CSS and Javascript.
-> This game is in beta version 1.0.2
+> * "Homer, Help" is a game build in HTML canvas, CSS and Javascript.
+> * This game is in beta version 1.0.2
 #### TLDR: https://brunno-dev.github.io/homer-safe-marge/
 
-##About
+## About
 
 Little tribute to The Simpsons arcade game.
+
 ## Installation
 
 Clone or download this project, open the index.html file in your browser and have Fun. Or just click in this [link](https://github.com/brunno-dev/homer-safe-marge/)!
@@ -15,13 +15,11 @@ Clone or download this project, open the index.html file in your browser and hav
 
 > * Use your Keyboard
 > * Enter Key is used to Begin the game, pause and restart
-> * Up Key to go foward
-> * Down key to go back
-> * Left Key to go left
-> * Right Key to go right
+> * Up, down, left, Right Key to go move
+> * "p" Key to go pause
 > * Space Key to Attack
 > * Shift Key to restart
-> * Slash the ghosts and boss. Safe Marge!
+> * Punch the ghosts and boss. Safe Marge!
 
 ## Release History
 
@@ -33,7 +31,7 @@ Clone or download this project, open the index.html file in your browser and hav
     * Initial files added
 
 
-##Author
+## Author
 
 - Bruno Cardoso ([brunno.dev@gmail.com](mailto:brunno.dev@gmail.com))
 
@@ -43,7 +41,7 @@ Distributed under the Creative Commons license - Attribution-NonCommercial 4.0 I
 
 [https://github.com/brunno-dev/github-link](https://github.com/brunno-dev)
 
-##Resources
+## Resources
 
 - [Sprites][1].
 - [Audio][2].
@@ -60,5 +58,3 @@ Distributed under the Creative Commons license - Attribution-NonCommercial 4.0 I
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
 5. Create a new Pull Request
-
-
