@@ -424,6 +424,7 @@ let STATEPAUSE = false;
 //variáveis que definem mudanças de estado/ações
 let frames = 0;
 let counterEnemy = 0;
+let counterNextEnemy = 0;
 let tankGhost = [];
 let tankGhostDead = [];
 let crashed = nextEnemy = enemyAgain = finalGame = stateVictoryGame =
@@ -562,7 +563,7 @@ function updateEnemy() {
       if (bartDark.stateCrash && homer.fight) {
         bartDark.health -= 5;
         bartDark.x += 15;
-        bartDark.speed += 0.3;
+        bartDark.speed += 0.4;
       } //para o boss andar na direção y da marge a partir de um ponto x
       if (bartDark.x < homer.x && bartDark.x < 150) {
         bartDark.y = 250;
@@ -572,8 +573,12 @@ function updateEnemy() {
         bartDark.health = 100;
         bartDark.speed = 30;
         bartDark.y = Math.floor(Math.random() * (400 - 100)) + 100;
+        counterNextEnemy +=1;
+        //números de vezes que o boss aparece
+      } if(counterNextEnemy >= 4){
         enemyAgain = true;
-      } //momento que o bosso é derrotado
+      }
+      //momento que o bosso é derrotado
       if (bartDark.health <= 0 && enemyAgain) {
         bartDark.x = -100;
         finalGame = true;
