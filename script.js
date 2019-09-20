@@ -411,7 +411,7 @@ const UP = 38,
   RIGHT = 39,
   ENTER = 13,
   SPACE = 32;
-P = 80;
+  P = 80;
 
 let START = LOADING = GAMEOVER = PAUSE = false;
 let STATEGAME = false;
@@ -459,7 +459,7 @@ gameOverImg.src = 'images/gameOver.png'
 
 const duff = new Image();
 duff.src = 'images/duff.png'
-const duffImg = new Duff(duff.width, duff.height, 50, 250, duff)
+const duffImg = new Duff(duff.width, duff.height, 80, 250, duff)
 
 const life = new Image();
 life.src = 'images/life.png'
@@ -565,7 +565,7 @@ function updateEnemy() {
         finalGame = true;
         nextEnemy = false;
       }
-      if (finalGame && homer.x <= 25) {
+      if (finalGame && homer.x === 80) {
         stateFinal = true;
       }
       counterEnemy += 1;
