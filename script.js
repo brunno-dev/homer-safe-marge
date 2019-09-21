@@ -25,11 +25,11 @@ class Player {
     this.strength = 5;
   }
   //desenhar o contexto da imagem do Player criado, com base nos parâmetros abaixo
-  draw() {
+  get draw() {
     ctx.drawImage(this.img, this.sourceX, this.sourceY, this.width, this.height, this.x, this.y, 60, 105);
   }
   // comandos de movimento do Player, com todas as trocas de sprites
-  move() {
+  get move() {
     //arrays com o "corte" da posição X dos sprites de movimento 
     let fightSprites = [60.5, 60.5, 163, 113, 9, 662, 60.5, 60.5, 60.5];
     // let leftSprites = [667, 614, 568, 525, 476, 667, 667]
@@ -131,14 +131,14 @@ class Player {
 
     }
   }
-  attack() {
+  get attack() {
     if (this.fight && this.stateFight === false) {
       this.stateFight = true;
       Enemy.health - 5
       this.score += 5;
     }
   }
-  crashPlayer() {
+  get crashPlayer() {
     if (this.x + this.width > Enemy.x && this.x < Enemy.x + Enemy.width && this.y + this.height > Enemy.y && this.y < Enemy.y + Enemy.height) {
       return console.log("bateu no fantasma")
     }
@@ -156,10 +156,10 @@ class Familymarge {
     this.y = y;
     this.img = img;
   }
-  draw() {
+  get draw() {
     ctx.drawImage(this.img, this.sourceX, this.sourceY, this.width, this.height, this.x, this.y, 80, 160);
   }
-  move() {
+  get move() {
     if (frames % 10 === 0) {
       let arrMarge = [0, 41, 0, 41, 0, 0, 0]
       let spriteRandom = Math.floor(Math.random() * arrMarge.length)
@@ -179,7 +179,7 @@ class Duff {
     this.y = y;
     this.img = img;
   }
-  draw() {
+  get draw() {
     ctx.drawImage(this.img, this.sourceX, this.sourceY, this.width, this.height, this.x, this.y, 70, 40);
   }
 }
@@ -195,10 +195,10 @@ class Life {
     this.y = y;
     this.img = img;
   }
-  draw() {
+  get draw() {
     ctx.drawImage(this.img, this.sourceX, this.sourceY, this.width, this.height, this.x, this.y, 110, 120);
   }
-  move() {
+  get move() {
     if (homer.health > 50 && homer.health < 130) {
       this.sourceX = 160;
     }
@@ -215,14 +215,14 @@ class BackgroundImage {
     this.speed = 1.5;
   }
 
-  move() {
+  get move() {
     if (homer.moveRight) {
       // this.x -= this.speed;
       // this.x %= canvas.width;x
     }
   }
 
-  draw() {
+  get draw() {
     ctx.drawImage(this.img, this.x, 0);
     // if (this.speed < 0) {
     //   ctx.drawImage(this.img, this.x - img.width, 0);
@@ -248,11 +248,11 @@ class Enemy {
   }
 
   //desenhar o contexto da imagem do Player criado, com base nos parâmetros abaixo
-  draw() {
+  get draw() {
     ctx.drawImage(this.img, this.sourceX, this.sourceY, 60, this.height, this.x, this.y, 60, 105);
   }
   //comandos de movimento do Player, com todas as trocas de sprites
-  move() {
+  get move() {
     if (frames % 3 === 0) {
       let fly = [657, 724, 657, 657, 657, 657]
       let spriteRandom = Math.floor(Math.random() * fly.length);
@@ -264,7 +264,41 @@ class Enemy {
       }
     }
   }
-  checkEnemyCrash() {
+
+  get controls() {
+    //condição para quando os socos do homer atingirem os fantasmas
+    if (this.stateCrash && homer.fight) {
+      this.health -= 3
+      this.x += 10
+      punchSound.pause()
+      punchTwoSound.play()
+    } //sons de soco que não atingem os fantasmas
+    if (!this.stateCrash && homer.fight) {
+      punchSound.play()
+    } //dano que os fantasmas causam ao homer
+    if (this.stateCrash && !homer.fight) {
+      homer.x -= 10;
+      homer.health -= 3;
+      homer.sourceX = 10;
+      homer.sourceY = 2040;
+      damageHomer.play();
+    } //para os fantasmas andarem na direção y da marge a partir de um ponto x
+    if (this.x < homer.x && this.x < 150) {
+      this.y = 250;
+    } //aumenta a velocidade dos fantasmas, após matar dois deles
+    if (tankGhostDead.length >= 2) {
+      this.speed += 0.05;
+    } //se os fantasmas encontrarem a marge, game over true
+    if (this.x <= 25) {
+      GAMEOVER = true;
+    } // transfere os fantasmas do tanque original para o tanque de fantasmas destruídos
+    if (this.health <= 0) {
+      let ghostDead = tankGhost.splice(i, 1);
+      tankGhostDead.push(ghostDead)
+    }
+  }
+
+  get checkEnemyCrash() {
 
     if (this.x + this.width > homer.x && this.x < homer.x + homer.width && this.y + this.height > homer.y && this.y < homer.y + homer.height) {
       return this.stateCrash = true;
@@ -285,16 +319,15 @@ class FinalEnemy {
     this.img = img;
     this.speed = 3;
     this.health = 200;
-    this.attack = 5;
     this.stateCrash = false;
   }
 
   //desenhar o contexto da imagem do Player criado, com base nos parâmetros abaixo
-  draw() {
+  get draw() {
     ctx.drawImage(this.img, this.sourceX, this.sourceY, 60, this.height, this.x, this.y, 100, 140);
   }
   //comandos de movimento do Player, com todas as trocas de sprites
-  move() {
+  get move() {
     let fly = [0, 58, 0, 112, 58, 0, 58]
     let flyDead = [285, 225, 285, 340, 0, 58, 112, 0, 0]
     let spriteRandom = Math.floor(Math.random() * fly.length);
@@ -307,7 +340,43 @@ class FinalEnemy {
       }
     }
   }
-  checkEnemyCrash() {
+  get controls() {
+    
+    if (this.stateCrash && homer.fight) {
+      this.health -= 5;
+      this.x += 15;
+      this.speed += 0.4;
+    } //para o boss andar na direção y da marge a partir de um ponto x
+    if (this.x < homer.x && this.x < 150) {
+      this.y = 250;
+    } //retorna o boss para a tela, após a primeira derrota dele
+    if (this.health <= 0 && !enemyAgain) {
+      this.x = 1300;
+      this.health = 100;
+      this.speed = 30;
+      this.y = Math.floor(Math.random() * (400 - 100)) + 100;
+      counterNextEnemy += 1;
+      //números de vezes que o boss aparece
+    }
+    if (counterNextEnemy >= 4) {
+      enemyAgain = true;
+    }
+    //momento que o bosso é derrotado
+    if (this.health <= 0 && enemyAgain) {
+      this.x = -100;
+      finalGame = true;
+      nextEnemy = false;
+    } //momento que o homer pega a cerveja
+    if (finalGame && homer.x === 80) {
+      stateFinal = true;
+    }//estado de game over
+    if (this.x <= 25 && this.x > 0) {
+      GAMEOVER = true;
+    }
+  }
+
+
+  get checkEnemyCrash() {
 
     if (this.x + this.width > homer.x && this.x < homer.x + homer.width && this.y + this.height > homer.y && this.y < homer.y + homer.height) {
       return this.stateCrash = true;
@@ -318,10 +387,9 @@ class FinalEnemy {
 }
 
 ///FUNÇÕES QUE "RECEBEM" OS EVENTOS DAS TECLAS PRESSIONADAS 
-//recebe e identifica o evento de tecla pressionada
-window.addEventListener("keydown", keydownHandler)
+
 //função que recebe a tecla pressionada e transforma em true. Com isso, gera o movimento da classe Player.
-function keydownHandler(e) {
+const keydownHandler = (e) => {
   switch (e.keyCode) {
     case UP:
       homer.moveUp = true;
@@ -363,10 +431,11 @@ function keydownHandler(e) {
         break;
   }
 }
-//recebe e identifica o evento de tecla que deixou de ser pressionada
-window.addEventListener("keyup", keyupHandler)
+//recebe e identifica o evento de tecla pressionada
+window.addEventListener("keydown", keydownHandler)
+
 //função que recebe o evento da tecla específica que deixou de ser pressionada(false). Com isso o Player fica parado.
-function keyupHandler(e) {
+const keyupHandler = (e) => {
   switch (e.keyCode) {
     case UP:
       homer.moveUp = false;
@@ -404,7 +473,8 @@ function keyupHandler(e) {
       break;
   }
 }
-
+//recebe e identifica o evento de tecla que deixou de ser pressionada
+window.addEventListener("keyup", keyupHandler)
 
 //ESTADOS DO JOGO E INSTANCIAS CRIADAS
 //Associa as keycodes das teclas em variáveis de movimento/ação.
@@ -414,7 +484,7 @@ const UP = 38,
   RIGHT = 39,
   ENTER = 13,
   SPACE = 32;
-  P = 80;
+P = 80;
 
 //estados do jogo
 let START = LOADING = GAMEOVER = PAUSE = false;
@@ -509,96 +579,36 @@ const damageHomer = new Audio('sounds/audio/Homer Simpson Doh Sound FX.m4a')
 
 //FUNÇÕES QUE CONTROLAM AS AÇÕES DO JOGO E RENDERIZAÇÃO
 //Função que controla as ações dos fantasmas e do último inimigo.
-window.onload = function () {
-  introSound.play()
-}
+window.onload = () => introSound.play();
 
 //função voltada para definir ações que envolvem os inimigos
-function updateEnemy() {
+const updateEnemy = () => {
   if (START || LOADING) {
     if (tankGhost.length >= 0) {
       //chama os métodos da classe enemy(fantasmas)
       for (i = 0; i < tankGhost.length; i++) {
-        tankGhost[i].move();
-        tankGhost[i].draw();
-        //condição para quando os socos do homer atingirem os fantasmas
-        if (tankGhost[i].stateCrash && homer.fight) {
-          tankGhost[i].health -= 3
-          tankGhost[i].x += 10
-          punchSound.pause()
-          punchTwoSound.play()
-        } //sons de soco que não atingem os fantasmas
-        if (!tankGhost[i].stateCrash && homer.fight) {
-          punchSound.play()
-        } //dano que os fantasmas causam ao homer
-        if (tankGhost[i].stateCrash && !homer.fight) {
-          homer.x -= 10;
-          homer.health -= 3;
-          homer.sourceX = 10;
-          homer.sourceY = 2040;
-          damageHomer.play();
-        } //para os fantasmas andarem na direção y da marge a partir de um ponto x
-        if (tankGhost[i].x < homer.x && tankGhost[i].x < 150) {
-          tankGhost[i].y = 250;
-        } //aumenta a velocidade dos fantasmas, após matar dois deles
-        if (tankGhostDead.length >= 2) {
-          tankGhost[i].speed += 0.05;
-        } //se os fantasmas encontrarem a marge, game over true
-        if (tankGhost[i].x <= 25) {
-          GAMEOVER = true;
-        } // transfere os fantasmas do tanque original para o tanque de fantasmas destruídos
-        if (tankGhost[i].health <= 0) {
-          let ghostDead = tankGhost.splice(i, 1);
-          tankGhostDead.push(ghostDead)
-        }
+        tankGhost[i].move;
+        tankGhost[i].draw;
+        tankGhost[i].controls;
       } //define a quantidade de fantasmas que vão aparecer
-      if (tankGhostDead.length < 11)
+      if (tankGhostDead.length < 11) {
         if (counterEnemy % 150 === 0) {
           tankGhost.push(new Enemy(enemyOne))
           counterEnemy = 0;
-          //estado que invoca o boss
-        } if (tankGhostDead.length > 2 && tankGhost.length === 0) {
-        nextEnemy = true;
-      } //dano sofrido ao boss pelo homer
-      if (bartDark.stateCrash && homer.fight) {
-        bartDark.health -= 5;
-        bartDark.x += 15;
-        bartDark.speed += 0.4;
-      } //para o boss andar na direção y da marge a partir de um ponto x
-      if (bartDark.x < homer.x && bartDark.x < 150) {
-        bartDark.y = 250;
-      } //retorna o boss para a tela, após a primeira derrota dele
-      if (bartDark.health <= 0 && !enemyAgain) {
-        bartDark.x = 1300;
-        bartDark.health = 100;
-        bartDark.speed = 30;
-        bartDark.y = Math.floor(Math.random() * (400 - 100)) + 100;
-        counterNextEnemy +=1;
-        //números de vezes que o boss aparece
-      } if(counterNextEnemy >= 4){
-        enemyAgain = true;
+        }
       }
-      //momento que o bosso é derrotado
-      if (bartDark.health <= 0 && enemyAgain) {
-        bartDark.x = -100;
-        finalGame = true;
-        nextEnemy = false;
-      } //momento que o homer pega a cerveja
-      if (finalGame && homer.x === 80) {
-        stateFinal = true;
+      if (tankGhostDead.length > 2 && tankGhost.length === 0) {
+        nextEnemy = true;
       }
       counterEnemy += 1;
-    } //estado de game over
-    if (bartDark.x <= 25 && bartDark.x > 0) {
-      GAMEOVER = true;
-    } //checa se estado de colisão dos fantasmas do tanque é true
-    crashed = tankGhost.some(item => item.checkEnemyCrash())
+    }  //checa se estado de colisão dos fantasmas do tanque é true
+    crashed = tankGhost.some(item => item.checkEnemyCrash)
   }
 }
 
 
 //Função que controla a entrada e saída da maioria dos sons do jogo
-function sounds() {
+const sounds = () => {
   if (START && LOADING) {
     introSound.pause()
   }
@@ -617,47 +627,48 @@ function sounds() {
 }
 
 //Função que desenha com a condição de frames
-function draw() {
+const draw = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   if (!START && !LOADING) {
     ctx.drawImage(imgIntro, 0, 0, canvas.width, canvas.height)
   }
   if (START && LOADING && !nextEnemy) {
-    imgBackground.draw();
+    imgBackground.draw;
   }
   if (START && LOADING && nextEnemy) {
-    imgBackgroundTwo.draw();
+    imgBackgroundTwo.draw;
   }
   if (START || LOADING) {
-    homer.draw();
-    marge.draw();
-    lifeImg.draw();
+    homer.draw;
+    marge.draw;
+    lifeImg.draw;
     if (nextEnemy) {
-      bartDark.draw()
-      bartDark.move()
+      bartDark.draw;
+      bartDark.move;
     }
   }
   if (finalGame) {
-    imgBackground.draw();
-    duffImg.draw();
-    homer.draw();
-    marge.draw();
+    imgBackground.draw;
+    duffImg.draw;
+    homer.draw;
+    marge.draw;
   }
 }
 
 //função "motor", que inicia todas as outras funções e renderizações do jogo
-function startRender() {
+const startRender = () => {
   if (!GAMEOVER) { //Se o estado não for GAMEOVER ele executa toda a função
     if (!STATEPAUSE) { //se o estado não for PAUSE, ele executa todas as ações do bloco
-      homer.move();
-      marge.move()
-      lifeImg.move();
-      bartDark.checkEnemyCrash()
-      homer.attack();
-      draw();
       frames += 1;
-      homer.crashPlayer();
+      lifeImg.move;
+      homer.move;
+      homer.attack;
+      homer.crashPlayer;
+      marge.move;
+      bartDark.controls;
+      bartDark.checkEnemyCrash;
+      draw();
       updateEnemy();
       if (!finalGame) {
         sounds()
@@ -689,7 +700,7 @@ function startRender() {
       victorySound.play();
       stateVictoryGame = true;
     } else {
-      stateVictoryGame.pause();
+      victorySound.pause();
     }
 
   }
