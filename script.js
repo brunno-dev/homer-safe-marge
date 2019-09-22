@@ -32,7 +32,6 @@ class Player {
   get move() {
     //arrays com o "corte" da posição X dos sprites de movimento 
     let fightSprites = [60.5, 60.5, 163, 113, 9, 662, 60.5, 60.5, 60.5];
-    // let leftSprites = [667, 614, 568, 525, 476, 667, 667]
     let upDownSprites = [184, 184, 236, 334, 377, 470, 184]
     //função que será utilizada para randomizar os sprites
     let spriteRandom = Math.floor(Math.random() * 6);
@@ -144,7 +143,7 @@ class Player {
   get crashPlayer() {
     if (this.x + this.width > Enemy.x && this.x < Enemy.x + Enemy.width && this.y +
       this.height > Enemy.y && this.y < Enemy.y + Enemy.height) {
-      return console.log("bateu no fantasma")
+      return true
     }
   }
 
@@ -190,7 +189,6 @@ class Duff {
 //display de vida
 class Life {
   constructor(width, height, x, y, img) {
-    this.moveRight = this.moveLeft = this.moveDown = this.moveUp = this.fight = false;
     this.sourceX = 30;
     this.sourceY = 10;
     this.width = width;
@@ -479,7 +477,7 @@ const UP = 38,
   RIGHT = 39,
   ENTER = 13,
   SPACE = 32;
-P = 80;
+  P = 80;
 
 //estados do jogo
 let START = LOADING = GAMEOVER = PAUSE = false;
@@ -581,7 +579,7 @@ const updateEnemy = () => {
   if (START || LOADING) {
     if (tankGhost.length >= 0) {
       //chama os métodos da classe enemy(fantasmas)
-      for (i = 0; i < tankGhost.length; i++) {
+      for (i in tankGhost) {
         tankGhost[i].move;
         tankGhost[i].draw;
         tankGhost[i].controls;
