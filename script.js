@@ -127,6 +127,9 @@ class Player {
       }
       if (this.health <= 0) {
         GAMEOVER = true;
+      } //estado de game over
+      if (bartDark.x <= 25 && bartDark.x > 0) {
+        GAMEOVER = true;
       }
 
     }
@@ -342,7 +345,7 @@ class FinalEnemy {
     }
   }
   get controls() {
-    
+
     if (this.stateCrash && homer.fight) {
       this.health -= 5;
       this.x += 15;
@@ -350,6 +353,18 @@ class FinalEnemy {
     } //para o boss andar na direção y da marge a partir de um ponto x
     if (this.x < homer.x && this.x < 150) {
       this.y = 250;
+    } //retorna o boss para a tela, após a primeira derrota dele
+    if (this.health <= 0 && !enemyAgain) {
+      this.x = 1300;
+      this.health = 100;
+      this.speed = 30;
+      this.y = Math.floor(Math.random() * (400 - 100)) + 100;
+      counterNextEnemy += 1;
+    } //momento que o bosso é derrotado
+    if (this.health <= 0 && enemyAgain) {
+      this.x = -100;
+      finalGame = true;
+      nextEnemy = false;
     }
 
   }
@@ -579,36 +594,18 @@ const updateEnemy = () => {
       if (tankGhostDead.length > 2 && tankGhost.length === 0) {
         nextEnemy = true;
       }
-       //retorna o boss para a tela, após a primeira derrota dele
-      if (bartDark.health <= 0 && !enemyAgain) {
-        bartDark.x = 1300;
-        bartDark.health = 100;
-        bartDark.speed = 30;
-        bartDark.y = Math.floor(Math.random() * (400 - 100)) + 100;
-        counterNextEnemy += 1;
-        //números de vezes que o boss aparece
-      }
       if (counterNextEnemy >= 4) {
         enemyAgain = true;
       }
-      //momento que o bosso é derrotado
-      if (bartDark.health <= 0 && enemyAgain) {
-        bartDark.x = -100;
-        finalGame = true;
-        nextEnemy = false;
-      } //momento que o homer pega a cerveja
+      //momento que o homer pega a cerveja
       if (finalGame && homer.x === 80) {
         stateFinal = true;
       }
       counterEnemy += 1;
-    } //estado de game over
-    if (bartDark.x <= 25 && bartDark.x > 0) {
-      GAMEOVER = true;
     } //checa se estado de colisão dos fantasmas do tanque é true
     crashed = tankGhost.some(item => item.checkEnemyCrash)
   }
 }
-
 
 //Função que controla a entrada e saída da maioria dos sons do jogo
 const sounds = () => {
@@ -683,7 +680,6 @@ const startRender = () => {
   if (GAMEOVER) { //se o estado GAMEOVER for true, ele faz apenas executa apenas este bloco
     ctx.drawImage(gameOverImg, 0, 0, canvas.width, canvas.height)
     levelOne.pause();
-
     nextEnemySound.pause()
     if (!stateGameOverSound) {
       stateGameOverSound = true;
@@ -695,7 +691,6 @@ const startRender = () => {
   if (finalGame) {
     levelOne.play();
   }
-
   if (stateFinal) {
     ctx.drawImage(imgVictory, 0, 0, canvas.width, canvas.height);
     levelOne.pause();
@@ -706,5 +701,4 @@ const startRender = () => {
   }
   requestAnimationFrame(startRender);
 }
-
 requestAnimationFrame(startRender)
