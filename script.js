@@ -142,7 +142,8 @@ class Player {
     }
   }
   get crashPlayer() {
-    if (this.x + this.width > Enemy.x && this.x < Enemy.x + Enemy.width && this.y + this.height > Enemy.y && this.y < Enemy.y + Enemy.height) {
+    if (this.x + this.width > Enemy.x && this.x < Enemy.x + Enemy.width && this.y +
+      this.height > Enemy.y && this.y < Enemy.y + Enemy.height) {
       return console.log("bateu no fantasma")
     }
   }
@@ -428,7 +429,7 @@ const keydownHandler = (e) => {
 //recebe e identifica o evento de tecla pressionada
 window.addEventListener("keydown", keydownHandler)
 
-//função que recebe o evento da tecla específica que deixou de ser pressionada(false). Com isso o Player fica parado.
+//função que recebe o evento da tecla específica que deixou de ser pressionada(false).
 const keyupHandler = (e) => {
   switch (e.keyCode) {
     case UP:
