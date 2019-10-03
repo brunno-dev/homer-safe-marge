@@ -171,20 +171,6 @@ class FamilyMarge {
     }
   }
 }
-//cerveja
-class Duff {
-  constructor(width, height, x, y, img) {
-    this.sourceX = this.sourceY = 0;
-    this.width = width;
-    this.height = height;
-    this.x = x;
-    this.y = y;
-    this.img = img;
-  }
-  get draw() {
-    ctx.drawImage(this.img, this.sourceX, this.sourceY, this.width, this.height, this.x, this.y, 70, 40);
-  }
-}
 //display de vida
 class Life {
   constructor(width, height, x, y, img) {
@@ -513,6 +499,10 @@ const imgTree = new Image();
 imgTree.src = "images/scene - night3.png";
 let imgBackgroundTree = new BackgroundImage(imgTree)
 
+const imgDuffy = new Image();
+imgDuffy.src = "images/sceneDuffy.png";
+let imgBackgroundDuffy = new BackgroundImage(imgDuffy)
+
 const imgIntro = new Image()
 imgIntro.src = "images/seriesList2.png"
 
@@ -524,10 +514,6 @@ imgVictory.src = "images/victory.png"
 
 const gameOverImg = new Image();
 gameOverImg.src = 'images/gameOver.png'
-
-const duff = new Image();
-duff.src = 'images/duff.png'
-const duffImg = new Duff(duff.width, duff.height, 80, 250, duff)
 
 const life = new Image();
 life.src = 'images/life.png'
@@ -637,10 +623,9 @@ const draw = () => {
     }
   }
   if (finalGame) {
-    imgBackground.draw;
+    imgBackgroundDuffy.draw;
     homer.draw;
     marge.draw;
-    duffImg.draw;
   }
 }
 
