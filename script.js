@@ -8,7 +8,6 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth * 0.65
 canvas.height = window.innerHeight * 0.77
 
-
 //CLASSES CRIADAS PARA OS OBJETOS DO JOGO
 //homer
 class Player {
@@ -149,7 +148,7 @@ class Player {
 
 }
 //marge
-class Familymarge {
+class FamilyMarge {
   constructor(width, height, x, y, img) {
     this.moveRight = this.moveLeft = this.moveDown = this.moveUp = this.fight = false;
     this.sourceX = this.sourceY = 0;
@@ -463,6 +462,7 @@ const keyupHandler = (e) => {
       break;
     case ENTER:
       LOADING = true
+      startOne = true;
       break;
   }
 }
@@ -485,13 +485,12 @@ let STATEGAME = false;
 let STATEPAUSE = false;
 
 //variáveis que definem mudanças de estado/ações
-let frames = 0;
-let counterEnemy = 0;
-let counterNextEnemy = 0;
+let frames = counterEnemy = counterNextEnemy = 0;
+
 let tankGhost = [];
 let tankGhostDead = [];
 let crashed = nextEnemy = enemyAgain = finalGame = stateVictoryGame =
-  stateImg = stateGameOverSound = stateFinal = false;
+  stateImg = stateGameOverSound = stateFinal = startOne = false;
 
 //CRIA AS IMAGENS DO JOGO
 const playerOne = new Image()
@@ -539,7 +538,7 @@ enemyOne.src = 'images/all-cut.png'
 
 const margeImage = new Image()
 margeImage.src = 'images/margie.png'
-const marge = new Familymarge(50, 100, -5, 200, margeImage);
+const marge = new FamilyMarge(50, 100, -5, 200, margeImage);
 
 const enemyTwo = new Image()
 enemyTwo.src = 'images/FinalEnemy.png'
@@ -548,25 +547,15 @@ let bartDark = new FinalEnemy(enemyTwo)
 
 //SONS
 const pauseSound = new Audio('sounds/audio/Pause Sound.m4a');
-
 const levelOne = new Audio('sounds/audio/129-Stage 1 - (Downtown Springfield).wav')
-
 const introSound = new Audio('sounds/audio/01-simpsons-theme-song.mp3')
-
 const nextEnemySound = new Audio('sounds/audio/40_Mr_ Burns 3.mp3')
-
 const endGameSound = new Audio('sounds/audio/139-Ending & Credits.wav');
-
 const startSound = new Audio('sounds/audio/start.mp3');
-
 const gameOverSound = new Audio('sounds/audio/43-game-over.mp3');
-
 const punchSound = new Audio('sounds/audio/Whoosh Punch Sound Effect Series.m4a');
-
 const punchTwoSound = new Audio('sounds/audio/Punch Sound Effect.m4a');
-
 const victorySound = new Audio('sounds/audio/victory.mp3');
-
 const damageHomer = new Audio('sounds/audio/Homer Simpson Doh Sound FX.m4a')
 
 
@@ -576,7 +565,7 @@ window.onload = () => introSound.play();
 
 //função voltada para definir ações que envolvem os inimigos
 const updateEnemy = () => {
-  if (START || LOADING) {
+  if ((START || LOADING) && startOne) {
     if (tankGhost.length >= 0) {
       //chama os métodos da classe enemy(fantasmas)
       for (i in tankGhost) {
@@ -611,7 +600,7 @@ const sounds = () => {
   if (START && LOADING) {
     introSound.pause()
   }
-  if (START) {
+  if (START && startOne) {
     levelOne.play();
   }
   if (homer.fight) {
@@ -632,13 +621,13 @@ const draw = () => {
   if (!START && !LOADING) {
     ctx.drawImage(imgIntro, 0, 0, canvas.width, canvas.height)
   }
-  if (START && LOADING && !nextEnemy) {
+  if (START && LOADING && !nextEnemy && startOne) {
     imgBackground.draw;
   }
-  if (START && LOADING && nextEnemy) {
+  if (START && LOADING && nextEnemy && startOne) {
     imgBackgroundTwo.draw;
   }
-  if (START || LOADING) {
+  if ((START || LOADING) && startOne) {
     homer.draw;
     marge.draw;
     lifeImg.draw;
@@ -649,9 +638,9 @@ const draw = () => {
   }
   if (finalGame) {
     imgBackground.draw;
-    duffImg.draw;
     homer.draw;
     marge.draw;
+    duffImg.draw;
   }
 }
 
